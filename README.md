@@ -22,58 +22,59 @@ STEP 7:Run the scene and display the output.
 
 ## PROGRAM:
 
-Developed by: M.CHANDRU
+Developed by: M.Pavithra
 
-Register no: 212222230026
+Register no: 212222100032
 
 ### player.cs:
-```python
+```
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using UnityEditor;
 using UnityEngine;
-using System.Threading;
 
-public class player : MonoBehaviour
+
+public class ex3 : MonoBehaviour
 {
     public float speed;
     public float jumpforce;
     private Rigidbody2D rb;
-    public CoinManager cc;
+    public Score cc;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        float moveinp = Input.GetAxisRaw("Horizontal");
-        transform.position += new Vector3(moveinp, 0, 0) * speed * Time.deltaTime;
+        float moveInput = Input.GetAxisRaw("Horizontal");
+        transform.position += new Vector3(moveInput, 0, 0) * speed * Time.deltaTime;
 
         if (Input.GetKeyDown(KeyCode.Space) && Mathf.Abs(rb.velocity.y) < 0.001f)
         {
             rb.AddForce(new Vector2(0, jumpforce), ForceMode2D.Impulse);
         }
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.CompareTag("Destroy"))
+        if(other.CompareTag("Destroy"))
         {
             cc.coincount++;
-            Destroy(collision.gameObject);
+            Destroy(other.gameObject);
         }
     }
 }
 ```
 
 ### Coin Manager:
-```python
-using System.Collections;
+```using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CoinManager : MonoBehaviour
+public class Score : MonoBehaviour
 {
     public int coincount;
     public Text value;
@@ -86,7 +87,7 @@ public class CoinManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        value.text = coincount.ToString(); 
+        value.text = coincount.ToString();
     }
 }
 ```
